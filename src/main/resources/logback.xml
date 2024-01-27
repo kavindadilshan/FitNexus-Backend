@@ -1,0 +1,63 @@
+<configuration debug="on">
+
+    <!-- THIS IS OUR CUSTOM CONTEXT LISTENER -->
+    <contextListener class="com.fitnexus.server.config.AppEventConfig"/>
+
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                %black(%d{ISO8601}) %highlight(%-5level) [%blue(%t)] %yellow(%C{1.}): %msg%n%throwable
+            </Pattern>
+        </layout>
+    </appender>
+
+    <!--  Configuration for your local environment -->
+    <springProfile name="dev">
+        <root level="info">
+            <appender-ref ref="Console"/>
+        </root>
+    </springProfile>
+
+    <!-- Configuration for Development Environment -->
+    <springProfile name="prod">
+
+        <appender name="cloud-watch" class="io.github.dibog.AwsLogAppender">
+
+            <awsConfig>
+                <!--<profileName>awsProfile</profileName>-->
+                <credentials>
+                    <accessKeyId> ${FO_AWS_KEY_ID} </accessKeyId>
+                    <secretAccessKey> ${FO_AWS_ACCESS_KEY} </secretAccessKey>
+                </credentials>
+
+                <region>ap-southeast-1</region>
+
+            </awsConfig>
+
+            <createLogGroup>true</createLogGroup>
+            <queueLength>100</queueLength>
+            <groupName>FITZKY_ONLINE-GENERAL</groupName>
+            <streamName>prod-${instance_id}</streamName>
+            <dateFormat>yyyyMMdd</dateFormat>
+
+            <layout>
+                <pattern>[%X{a} %X{b}] %-4relative [%thread] %-5level %logger{35} - %msg %n</pattern>
+            </layout>
+
+        </appender>
+
+        <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <Pattern>
+                    %black(%d{ISO8601}) %highlight(%-5level) [%blue(%t)] %yellow(%C{1.}): %msg%n%throwable
+                </Pattern>
+            </layout>
+        </appender>
+
+        <root level="info">
+            <appender-ref ref="cloud-watch"/>
+        </root>
+
+    </springProfile>
+
+</configuration>
