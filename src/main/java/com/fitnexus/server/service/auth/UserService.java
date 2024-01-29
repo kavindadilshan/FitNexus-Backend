@@ -7,4 +7,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface UserService extends UserDetailsService {
 
+    int createVerificationToken(AuthUser user);
+
+    HttpStatus checkVerificationToken(String token);
+
+    void resendEmailToken(String existingToken);
 }
