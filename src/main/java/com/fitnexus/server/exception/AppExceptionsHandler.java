@@ -51,21 +51,4 @@ public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(new ErrorMessageResponse(false, "User not found", HttpStatus.UNAUTHORIZED.value()), HttpStatus.UNAUTHORIZED);
     }
 
-    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public final ResponseEntity handleAllExceptions(MethodArgumentTypeMismatchException ex) {
-        ex.printStackTrace();
-        return new ResponseEntity<>(new ErrorMessageResponse(false, ex.getMessage(), HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
-    }
-
-    @Override
-    public ResponseEntity<Object> handleMissingServletRequestParameter(@Nonnull MissingServletRequestParameterException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        ex.printStackTrace();
-        return new ResponseEntity<>(new ErrorMessageResponse(false, ex.getMessage(), HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
-    }
-
-    @Override
-    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        ex.printStackTrace();
-        return new ResponseEntity<>(new ErrorMessageResponse(false, ex.getMessage(), HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
-    }
 }
