@@ -5,7 +5,7 @@ import com.fitnexus.server.util.CustomGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 
-import static com.fitnexus.server.constant.FitzkyConstants.ErrorConstants.FORBIDDEN_RESOURCE;
+import static com.fitnexus.server.constant.FitNexusConstants.ErrorConstants.FORBIDDEN_RESOURCE;
 
 
 @Slf4j
