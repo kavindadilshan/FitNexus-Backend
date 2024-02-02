@@ -9,4 +9,5 @@ import org.springframework.stereotype.Service;
 public interface OTPService {
     void sendOtpAndSaveIt(String mobile);
 
+    void verifyOtp(PinVerifyDTO pinVerifyDTO) throws CustomServiceException;
 }

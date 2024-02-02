@@ -47,6 +47,37 @@ public class OTPServiceImpl implements OTPService {
         log.info("OTP send to " + mobile + " : " + true);
     }
 
+    /**
+     * @param pinVerifyDTO the request which contains the number and the received otp
+     * @throws CustomServiceException if the otp is not matching or if an another error occurred
+     */
+    @Override
+    public void verifyOtp(PinVerifyDTO pinVerifyDTO) throws CustomServiceException {
+
+        Optional<MobileOtp> optionalOtp = mobileOTPRepository.findById(pinVerifyDTO.getMobile());
+        if (!optionalOtp.isPresent()) {
+            throw new CustomServiceException(404, "No OTP for the number");
+        }
+        MobileOtp mobileOtp = optionalOtp.get();
+
+        long hours = ChronoUnit.HOURS.between(mobileOtp.getDateTime(), LocalDateTime.now());
+        if (hours >= 24) {
+            throw new CustomServiceException(403, "OTP is expired, please re-send");
+        }
+
+        if (mobileOtp.getOtp() != null && mobileOtp.getOtp().equals(pinVerifyDTO.getOtp())) {
+            log.info("OTP Matches : " + pinVerifyDTO);
+            return;
+        }
+
+        // this is only used for testing stage
+//        if (mobileOtp.getOtp() != null && pinVerifyDTO.getOtp().equals("1234")) {
+//            log.info("Default OTP Matches : " + "1234");
+//            return;
+//        }
+        throw new CustomServiceException(401, "Incorrect OTP");
+
+    }
 
 
 }

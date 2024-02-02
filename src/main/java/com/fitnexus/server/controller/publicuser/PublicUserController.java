@@ -45,4 +45,20 @@ public class PublicUserController {
         return ResponseEntity.ok(new CommonResponse<>(true, "OTP request is successful"));
     }
 
+    @PatchMapping(value = "/register/otp/verify")
+    public ResponseEntity registerVerify(@RequestBody PinVerifyDTO pinVerifyDTO) {
+        log.info("\nPublic user register OTP verify: " + pinVerifyDTO);
+        publicUserService.verifyOtp(pinVerifyDTO);
+        log.info("Response : OTP verification is successful");
+        return ResponseEntity.ok(new CommonResponse<>(true, "OTP verification is successful"));
+    }
+
+    @PostMapping(value = "/register/check")
+    public ResponseEntity registerCheck(@RequestBody PublicUserDTO publicUserDTO) {
+        log.info("\nPublic user check account: " + publicUserDTO);
+        publicUserService.checkMobileAccount(publicUserDTO);
+        log.info("Response : Account can proceed");
+        return ResponseEntity.ok(new CommonResponse<>(true, "Account can proceed"));
+    }
+
 }
