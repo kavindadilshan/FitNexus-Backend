@@ -86,9 +86,24 @@ public class AdminMembershipController {
 
 //----------------------------------------------------------------------------------------------------------------------------
 
+    //day pass
 
+    @PostMapping(value = "/day-pass")
+    public ResponseEntity createDayPassMembership(@RequestBody GymMembershipDTO dto) {
+        log.info("Create day pass membership: \nmembership dto: {}", dto);
+        membershipService.createGymDayPass(dto);
+        log.info("Response : Day pass created successfully");
+        return ResponseEntity.ok(new CommonResponse<>(true, "Day pass created successfully"));
+    }
+
+    @PutMapping(value = "/day-pass")
+    public ResponseEntity updateDayPassMembership(@RequestBody GymMembershipDTO dto) {
+        log.info("Update day pass membership: \nmembership dto: {}", dto);
+        membershipService.updateGymDayPass(dto);
+        log.info("Response : Day pass updated successfully");
+        return ResponseEntity.ok(new CommonResponse<>(true, "Day pass updated successfully"));
+    }
 
 //----------------------------------------------------------------------------------------------------------------------------
-
 
 }
