@@ -14,6 +14,7 @@ public class FitNexusConstants {
         public static final String FORBIDDEN_RESOURCE = "You are not authorized to access this resource!";
         public static final String BUSINESS_PROFILE_EXPIRED = "Business profile expired!";
         public static final int TOO_MANY_REQUESTS = 429;
+
     }
 
 }
