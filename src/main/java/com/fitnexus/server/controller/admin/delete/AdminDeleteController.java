@@ -18,9 +18,30 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/admin/delete")
 public class AdminDeleteController {
 
+    private final BusinessProfileService businessProfileService;
+    private final ClassService classService;
+    private final AdminPublicUserService adminPublicUserService;
+    private final GymService gymService;
+    private final PhysicalClassService physicalClassService;
     private final AuthUserService authUserService;
 
 
+
+    @DeleteMapping(value = "/public/{mobile}")
+    public ResponseEntity deletePublicUser(@PathVariable(value = "mobile") String mobile) {
+        log.info("\nDelete public user: {}", mobile);
+        adminPublicUserService.deletePublicUser(mobile);
+        log.info("\nDelete public user success: {}", mobile);
+        return ResponseEntity.ok(new CommonResponse<>(true, "Public user is deleted!"));
+    }
+
+    @DeleteMapping(value = "/gym/{id}")
+    public ResponseEntity deleteGym(@PathVariable(value = "id") long id) {
+        log.info("\nDelete gym: {}", id);
+        gymService.delete(id);
+        log.info("\nDelete gym success: {}", id);
+        return ResponseEntity.ok(new CommonResponse<>(true, "Gym is deleted!"));
+    }
 
     @DeleteMapping(value = "/coach/{username}")
     public ResponseEntity deleteAuthUser(@PathVariable(value = "username") String username) {
