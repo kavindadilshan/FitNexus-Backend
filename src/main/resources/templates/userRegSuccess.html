@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Fitzky Services</title>
+    <link rel="icon" href="https://d3iitm8eqnsqba.cloudfront.net/fitzky-logo.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Khula:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Khula:wght@600;700&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            background-color: #eaeaea;
+        }
+
+        #close {
+            position: absolute;
+            transform: rotate(45deg);
+            color: black;
+            left: 67%;
+            top: 22%;
+            font-size: 30px;
+            z-index: 999;
+            cursor: pointer;
+        }
+
+        #mainModal {
+            padding: 3%;
+            position: absolute;
+            height: 65%;
+            width: 40%;
+            left: 30%;
+            top: 20%;
+            border-radius: 10px 10px 0 0;
+            background-color: white;
+        }
+
+        #title {
+            position: relative;
+            width: 100%;
+            font-family: 'Khula', sans-serif;
+            font-size: 20px;
+            line-height: 33px;
+            align-items: center;
+            text-align: center;
+            letter-spacing: -0.615419px;
+            color: #3F3F3F;
+        }
+
+        #image {
+            position: relative;
+            width: 80%;
+            height: 70%;
+            left: 10%;
+            margin-bottom: 5%;
+        }
+
+        #description {
+            position: relative;
+            font-family: 'Khula', sans-serif;
+            font-size: 15px;
+            line-height: 24px;
+            text-align: center;
+            color: #000000;
+        }
+
+        #button {
+            position: absolute;
+            width: 40%;
+            height: 5%;
+            left: 30%;
+            top: 80%;
+            background: #407BFF;
+            border-radius: 0 0 10px 10px;
+            padding-top: 8px;
+            align-items: center;
+            text-align: center;
+            font-family: 'Khula', sans-serif;
+            color: white;
+            cursor: pointer;
+        }
+
+        @media (max-width: 990px) and (min-width: 320px) {
+            #button {
+                position: absolute;
+                width: 70%;
+                height: 5%;
+                left: 15%;
+                top: 85%;
+                background: #407BFF;
+                border-radius: 0 0 10px 10px;
+                padding-top: 8px;
+                align-items: center;
+                text-align: center;
+                font-family: 'Khula', sans-serif;
+                color: white;
+            }
+
+            #mainModal {
+                padding: 3%;
+                position: absolute;
+                height: 70%;
+                width: 70%;
+                left: 15%;
+                top: 15%;
+                border-radius: 10px 10px 0 0;
+                background-color: white;
+            }
+
+            #image {
+                position: relative;
+                width: 100%;
+                height: 70%;
+                left: 0;
+                margin-bottom: 5%;
+            }
+
+            #close {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+<div id="close" onclick="redirect()">+</div>
+<div id="mainModal">
+    <div id="title"><b>Email Confirmed!</b></div>
+    <img src="https://d3iitm8eqnsqba.cloudfront.net/verified.png" id="image" alt="Email verified">
+    <div id="description">Your email verification has been confirmed. You can now subscribe for the Fitzky services.
+    </div>
+</div>
+<div id="button" onclick="redirect()">Okay, Got it</div>
+<script>
+    function redirect() {
+        window.location.replace("https://public.fitzky.com/");
+    }
+</script>
+</body>
+</html>
