@@ -14,7 +14,22 @@ public class FitNexusConstants {
         public static final String FORBIDDEN_RESOURCE = "You are not authorized to access this resource!";
         public static final String BUSINESS_PROFILE_EXPIRED = "Business profile expired!";
         public static final int TOO_MANY_REQUESTS = 429;
+    }
+
+    public static final class NotFoundConstants {
+
+        public static final String NO_MANAGER_FOUND = "Business profile manager not found";
+
+        public static final String NO_BUSINESS_PROFILE_FOUND = "Business profile not found";
+
+        public static final String NO_LOCATION_FOUND = "Business profile location not found";
+
 
     }
+
+    public static final class DuplicatedConstants {
+        public static final String BUSINESS_PROFILE_ALREADY_EXISTS = "Business profile already exists";
+       }
+
 
 }
