@@ -61,4 +61,30 @@ public class PublicUserController {
         return ResponseEntity.ok(new CommonResponse<>(true, "Account can proceed"));
     }
 
+    @PostMapping(value = "/register/account")
+    public ResponseEntity registerAccount(@RequestBody PublicUserRegisterDTO userRegisterDTO, @RequestHeader(value = TIME_ZONE_HEADER, required = false) String timeZone) {
+        if (timeZone != null) userRegisterDTO.setTimeZone(timeZone);
+        log.info("\nPublic user register account: {} \ntimezone: {}", userRegisterDTO, timeZone);
+        publicUserService.createMobileAccount(userRegisterDTO);
+        JsonNode userAuthResp = apiHandler.getAuthResponse(userRegisterDTO.getMobile(), userRegisterDTO.getPassword(), SecurityConstants.PUBLIC_CLIENT_ID);
+        log.info("Response : User Auth Response.");
+        return ResponseEntity.ok(new CommonResponse<>(true, userAuthResp));
+    }
+
+    @PatchMapping(value = "/authenticate/otp/request")
+    public ResponseEntity otpLoginRequest(@RequestBody OTPRequestDTO otpRequestDTO) {
+        log.info("\nPublic user OTP login request: " + otpRequestDTO);
+        publicUserService.requestLoginOtp(otpRequestDTO);
+        log.info("Response : OTP login request is successful");
+        return ResponseEntity.ok(new CommonResponse<>(true, "OTP login request is successful"));
+    }
+
+    @PatchMapping(value = "/authenticate/otp/verify")
+    public ResponseEntity otpLoginVerify(@RequestBody PinVerifyDTO pinVerifyDTO) {
+        log.info("\nPublic user OTP login verify: " + pinVerifyDTO);
+        publicUserService.verifyOtpLogin(pinVerifyDTO);
+        JsonNode userAuthResp = apiHandler.getAuthResponse(pinVerifyDTO.getMobile(), pinVerifyDTO.getMobile(), SecurityConstants.PUBLIC_CLIENT_ID);
+        log.info("Response : User Auth Response.");
+        return ResponseEntity.ok(new CommonResponse<>(true, userAuthResp));
+    }
 }
