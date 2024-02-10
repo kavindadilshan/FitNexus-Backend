@@ -122,6 +122,41 @@ public class PublicUserPhysicalClassController {
         return ResponseEntity.ok(new CommonResponse<>(true, "Physical class is rated."));
     }
 
+    @GetMapping(value = "/{classId}/user/{userId}/ratings")
+    public ResponseEntity getRatingForPhysicalClass(@PathVariable("userId") long userId, @PathVariable("classId") long classId,
+                                                    @RequestHeader("Authorization") String token) {
+        log.info("Get rating details by physical class by public user: user id - {}\t: class id - {}", userId, classId);
+        CustomUserAuthenticator.checkPublicUserIdWithToken(userId, token);
+        ClassRateDTO rateForClassByUser = physicalClassService.getRateForPhysicalClassByUser(userId, classId);
+        log.info("Rating details by physical class- {]", rateForClassByUser);
+        return ResponseEntity.ok(new CommonResponse<>(true, rateForClassByUser));
+    }
+
+    @GetMapping(value = "/{classId}/ratings")
+    public ResponseEntity getRatingOfTrainerByClass(@PathVariable("classId") long classId,
+                                                    @RequestHeader("Authorization") String token, Pageable pageable) {
+
+        //start - guest user check
+        ResponseEntity gu = GuestUserUtil.isGuestUser(token);
+        if (gu != null) return gu;
+        //end - guest user check
+
+        log.info("\nGet physical class reviews by public user: physical class id - {}\t: pageable - {}", classId, pageable);
+        Page<PublicUserReviewsResponse> publicUserReviews = physicalClassService.getPhysicalClassRatingsByUser(classId, pageable);
+        log.info("\nPhysical class reviews by class");
+        return ResponseEntity.ok(new CommonResponse<>(true, publicUserReviews));
+    }
+
+    @PostMapping(value = "/rate-class-and-trainer")
+    public ResponseEntity ratePhysicalClassAndTrainerByUser(@RequestBody ClassAndTrainerRateDTO rateDTO,
+                                                            @RequestHeader("Authorization") String token) {
+        log.info("\nPublic user rate physical class and trainer: " + rateDTO);
+        CustomUserAuthenticator.checkPublicUserIdWithToken(rateDTO.getUserId(), token);
+        physicalClassService.ratePhysicalClassAndTrainer(rateDTO, 0);
+        log.info("Physical class and trainer are rated. {} ");
+        return ResponseEntity.ok(new CommonResponse<>(true, "Physical class and trainer are rated."));
+    }
+
     @GetMapping(value = "/{classId}/sessions")
     public ResponseEntity<CommonResponse<Page<ClassSessionListResponse>>> getSessionsByClass(
             @RequestParam(value = "dateTime", required = false) @DateTimeFormat(pattern = DATE_TIME_RESPONSE_PATTERN) LocalDateTime dateTime,

@@ -25,7 +25,18 @@ public class AdminDeleteController {
     private final PhysicalClassService physicalClassService;
     private final AuthUserService authUserService;
 
+    @DeleteMapping(value = "/profile/{id}")
+    public ResponseEntity deleteProfile(@PathVariable("id") long id) {
+        businessProfileService.deleteBusinessProfile(id);
+        return ResponseEntity.ok(new CommonResponse<>(true, "Business Profile deleted successfully"));
+    }
 
+    @DeleteMapping(value = "/class/online/{classId}")
+    public ResponseEntity deleteOnlineClass(@PathVariable(value = "classId") long classId) {
+        log.info("\nDelete online class: {}", classId);
+        classService.deleteClass(classId);
+        return ResponseEntity.ok(new CommonResponse<>(true, "Online class is deleted!"));
+    }
 
     @DeleteMapping(value = "/public/{mobile}")
     public ResponseEntity deletePublicUser(@PathVariable(value = "mobile") String mobile) {
@@ -41,6 +52,14 @@ public class AdminDeleteController {
         gymService.delete(id);
         log.info("\nDelete gym success: {}", id);
         return ResponseEntity.ok(new CommonResponse<>(true, "Gym is deleted!"));
+    }
+
+    @DeleteMapping(value = "/class/physical/{id}")
+    public ResponseEntity deletePhysicalClass(@PathVariable(value = "id") long id) {
+        log.info("\nDelete Physical Class: {}", id);
+        physicalClassService.delete(id);
+        log.info("\nDelete Physical Class success: {}", id);
+        return ResponseEntity.ok(new CommonResponse<>(true, "Physical Class is deleted!"));
     }
 
     @DeleteMapping(value = "/coach/{username}")
