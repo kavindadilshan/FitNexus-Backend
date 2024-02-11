@@ -29,8 +29,27 @@ public interface TrainerService {
 
     TrainerSingleDTO getTrainer(long trainerId, LocalDateTime dateTime, String token);
 
+    @Transactional
+    void rateTrainer(TrainerRateDTO rateDTO, int count);
+
+    @Transactional
+    void ratePhysicalTrainer(TrainerRateDTO rateDTO, int count);
+
+    TrainerRateDTO getRateForTrainerByUser(long publicUserId, long trainerId);
+
+    TrainerRateDTO getRateForPhysicalTrainerByUser(long publicUserId, long trainerId);
+
     TrainerCoachDTO getTrainerForCoachApp(Trainer trainer);
+
+    Page<PublicUserReviewsResponse> getTrainerRatingsByUser(long publicUserId, Pageable pageable);
+
+    Page<PublicUserReviewsResponse> getPhysicalTrainerRatingsByUser(long trainerId, Pageable pageable);
+
     Page<TrainerNameIdDTO> getTrainersForClass(long classId, Pageable pageable);
+
+    Page<TrainerRatingDTO> getTrainerRatings(long id, Pageable pageable);
+
+    Page<TrainerRatingDTO> getPhysicalTrainerRatings(long id, Pageable pageable);
 
     Page<ClassForTrainerDTO> getClassesForTrainer(long id, Pageable pageable);
 

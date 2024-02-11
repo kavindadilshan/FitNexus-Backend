@@ -43,7 +43,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-
+import static com.fitnexus.server.constant.FitNexusConstants.DetailConstants.RATE_DECIMAL_PLACES;
 import static com.fitnexus.server.constant.FitNexusConstants.NotFoundConstants.*;
 import static org.apache.logging.log4j.util.Chars.SPACE;
 
@@ -137,7 +137,87 @@ public class TrainerServiceImpl implements TrainerService {
         return getTrainerSingleDetail(trainer, dateTime, token);
     }
 
+    /**
+     * This can use to set new rating from public user to trainer.
+     *
+     * @param rateDTO the rating details DTO.
+     */
+    @Override
+    @Transactional
+    public void rateTrainer(TrainerRateDTO rateDTO, int count) {
+        try {
+            if (rateDTO.getRating() <= 0 || rateDTO.getRating() > 5)
+                throw new CustomServiceException("Invalid rating amount");
+            PublicUser publicUser = publicUserRepository
+                    .findById(rateDTO.getUserId()).orElseThrow(() -> new CustomServiceException(NO_PUBLIC_USER_FOUND));
+            Trainer trainer = trainerRepository.findById(rateDTO.getTrainerId())
+                    .orElseThrow(() -> new CustomServiceException(FitNexusConstants.NotFoundConstants.NO_TRAINER_FOUND));
+            List<TrainerRating> ratingByUserForTrainer = trainerRatingRepository.findByPublicUserAndTrainer(publicUser, trainer);
+            if (ratingByUserForTrainer.size() > 0) {
+                updateRating(rateDTO, ratingByUserForTrainer.get(0), trainer);
+            } else {
+                newRating(rateDTO, trainer, publicUser);
+            }
+        } catch (LockAcquisitionException | CannotAcquireLockException de) {
+            // re-tries up-to 3 times if transaction deadlock found.
+            if (count > 3) return;
+            rateTrainer(rateDTO, count + 1);
+        }
+    }
 
+    @Override
+    @Transactional
+    public void ratePhysicalTrainer(TrainerRateDTO rateDTO, int count) {
+        try {
+            if (rateDTO.getRating() <= 0 || rateDTO.getRating() > 5)
+                throw new CustomServiceException("Invalid rating amount");
+            PublicUser publicUser = publicUserRepository
+                    .findById(rateDTO.getUserId()).orElseThrow(() -> new CustomServiceException(NO_PUBLIC_USER_FOUND));
+            Trainer trainer = trainerRepository.findById(rateDTO.getTrainerId())
+                    .orElseThrow(() -> new CustomServiceException(FitNexusConstants.NotFoundConstants.NO_TRAINER_FOUND));
+            List<PhysicalTrainerRating> ratingByUserForTrainer = physicalTrainerRatingRepository.findByPublicUserAndTrainer(publicUser, trainer);
+            if (ratingByUserForTrainer.size() > 0) {
+                updatePhysicalRating(rateDTO, ratingByUserForTrainer.get(0), trainer);
+            } else {
+                newPhysicalRating(rateDTO, trainer, publicUser);
+            }
+        } catch (LockAcquisitionException | CannotAcquireLockException de) {
+            // re-tries up-to 3 times if transaction deadlock found.
+            if (count > 3) return;
+            rateTrainer(rateDTO, count + 1);
+        }
+    }
+
+    /**
+     * @param publicUserId the public user id
+     * @param trainerId    trainer id to check
+     * @return the rating details if presents, or null if not.
+     */
+    @Override
+    public TrainerRateDTO getRateForTrainerByUser(long publicUserId, long trainerId) {
+        PublicUser publicUser = publicUserRepository
+                .findById(publicUserId).orElseThrow(() -> new CustomServiceException(NO_PUBLIC_USER_FOUND));
+        Trainer trainer = trainerRepository.findById(trainerId)
+                .orElseThrow(() -> new CustomServiceException(FitNexusConstants.NotFoundConstants.NO_TRAINER_FOUND));
+        List<TrainerRating> ratingByUserForThisTrainer = trainerRatingRepository.findByPublicUserAndTrainer(publicUser, trainer);
+        if (ratingByUserForThisTrainer.size() <= 0) return null;
+        TrainerRating t = ratingByUserForThisTrainer.get(0);
+        return TrainerRateDTO.builder().trainerId(trainerId).comment(t.getComment()).rating(t.getRating())
+                .userId(publicUserId).build();
+    }
+
+    @Override
+    public TrainerRateDTO getRateForPhysicalTrainerByUser(long publicUserId, long trainerId) {
+        PublicUser publicUser = publicUserRepository
+                .findById(publicUserId).orElseThrow(() -> new CustomServiceException(NO_PUBLIC_USER_FOUND));
+        Trainer trainer = trainerRepository.findById(trainerId)
+                .orElseThrow(() -> new CustomServiceException(FitNexusConstants.NotFoundConstants.NO_TRAINER_FOUND));
+        List<PhysicalTrainerRating> ratingByUserForThisTrainer = physicalTrainerRatingRepository.findByPublicUserAndTrainer(publicUser, trainer);
+        if (ratingByUserForThisTrainer.size() <= 0) return null;
+        PhysicalTrainerRating t = ratingByUserForThisTrainer.get(0);
+        return TrainerRateDTO.builder().trainerId(trainerId).comment(t.getComment()).rating(t.getRating())
+                .userId(publicUserId).build();
+    }
 
     @Override
     public TrainerCoachDTO getTrainerForCoachApp(Trainer t) {
@@ -231,7 +311,69 @@ public class TrainerServiceImpl implements TrainerService {
         } else return null;
     }
 
+    private void newRating(TrainerRateDTO rateDTO, Trainer trainer, PublicUser publicUser) {
+        TrainerRating trainerRating = new TrainerRating();
+        trainerRating.setComment(rateDTO.getComment());
+        trainerRating.setRating(rateDTO.getRating());
+        trainerRating.setPublicUser(publicUser);
+        trainerRating.setTrainer(trainer);
+        trainerRating = trainerRatingRepository.save(trainerRating);
+        log.info("Save trainer rating - " + trainerRating);
 
+        // set trainer rating
+        double newTrainerRating = (trainer.getRating() * trainer.getRatingCount() + rateDTO.getRating())
+                / (trainer.getRatingCount() + 1);
+        trainer.setRating(CustomGenerator.round(newTrainerRating, RATE_DECIMAL_PLACES));
+        trainer.setRatingCount(trainer.getRatingCount() + 1);
+        trainerRepository.save(trainer);
+        log.info("New physical class trainer rating - " + newTrainerRating);
+    }
+
+    private void newPhysicalRating(TrainerRateDTO rateDTO, Trainer trainer, PublicUser publicUser) {
+        PhysicalTrainerRating trainerRating = new PhysicalTrainerRating();
+        trainerRating.setComment(rateDTO.getComment());
+        trainerRating.setRating(rateDTO.getRating());
+        trainerRating.setPublicUser(publicUser);
+        trainerRating.setTrainer(trainer);
+        trainerRating = physicalTrainerRatingRepository.save(trainerRating);
+        log.info("Save physical trainer rating - " + trainerRating);
+
+        // set trainer rating
+        double newTrainerRating = (trainer.getPhysicalClassRating() * trainer.getPhysicalClassRatingCount() + rateDTO.getRating())
+                / (trainer.getPhysicalClassRatingCount() + 1);
+        trainer.setPhysicalClassRating(CustomGenerator.round(newTrainerRating, RATE_DECIMAL_PLACES));
+        trainer.setPhysicalClassRatingCount(trainer.getPhysicalClassRatingCount() + 1);
+        trainerRepository.save(trainer);
+        log.info("New physical class trainer rating - " + newTrainerRating);
+    }
+
+    private void updateRating(TrainerRateDTO rateDTO, TrainerRating trainerRating, Trainer trainer) {
+        trainerRating.setComment(rateDTO.getComment());
+        trainerRating.setRating(rateDTO.getRating());
+        trainerRating = trainerRatingRepository.save(trainerRating);
+        log.info("Update trainer rating - " + trainerRating);
+
+        // set trainer rating
+        double newTrainerRating = ((trainer.getRating() * trainer.getRatingCount() - trainer.getRating())
+                + rateDTO.getRating()) / (trainer.getRatingCount());
+        trainer.setRating(CustomGenerator.round(newTrainerRating, RATE_DECIMAL_PLACES));
+        trainerRepository.save(trainer);
+        log.info("New trainer rating - " + newTrainerRating);
+    }
+
+    private void updatePhysicalRating(TrainerRateDTO rateDTO, PhysicalTrainerRating trainerRating, Trainer trainer) {
+        trainerRating.setComment(rateDTO.getComment());
+        trainerRating.setRating(rateDTO.getRating());
+        trainerRating = physicalTrainerRatingRepository.save(trainerRating);
+        log.info("Update physical trainer rating - " + trainerRating);
+
+        // set class rating
+        double newTrainerRating = ((trainer.getPhysicalClassRating() * trainer.getPhysicalClassRatingCount() - trainer.getPhysicalClassRating())
+                + rateDTO.getRating()) / (trainer.getPhysicalClassRatingCount());
+        trainer.setPhysicalClassRating(CustomGenerator.round(newTrainerRating, RATE_DECIMAL_PLACES));
+        trainerRepository.save(trainer);
+        log.info("New trainer rating - " + newTrainerRating);
+    }
 
     private TrainerDetailDTO getTrainerDetail(Trainer t, ClassMethod method) {
         AuthUser a = t.getAuthUser();

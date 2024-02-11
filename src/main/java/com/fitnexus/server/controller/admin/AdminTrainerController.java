@@ -41,7 +41,13 @@ public class AdminTrainerController {
         return ResponseEntity.ok(new CommonResponse<>(true, trainersForClass));
     }
 
-
+    @GetMapping(value = "/rating/{id}")
+    public ResponseEntity getTrainerRatings(@PathVariable long id, Pageable pageable) {
+        log.info("Get trainer ratings : \ntrainer id : {}", id);
+        Page<TrainerRatingDTO> trainerRatings = trainerService.getTrainerRatings(id, pageable);
+        log.info("Response : Trainer rating page");
+        return ResponseEntity.ok(new CommonResponse<>(true, trainerRatings));
+    }
 
     @GetMapping(value = "/classes/{id}")
     public ResponseEntity getClassesForTrainer(@PathVariable long id, Pageable pageable) {
@@ -51,7 +57,13 @@ public class AdminTrainerController {
         return ResponseEntity.ok(new CommonResponse<>(true, classesForTrainer));
     }
 
-
+    @GetMapping(value = "/rating/physical/{id}")
+    public ResponseEntity getPhysicalTrainerRatings(@PathVariable long id, Pageable pageable) {
+        log.info("Get physical trainer ratings : \ntrainer id : {}", id);
+        Page<TrainerRatingDTO> trainerRatings = trainerService.getPhysicalTrainerRatings(id, pageable);
+        log.info("Response : Physical trainer rating page");
+        return ResponseEntity.ok(new CommonResponse<>(true, trainerRatings));
+    }
 
     @GetMapping(value = "/classes/physical/{id}")
     public ResponseEntity getPhysicalClassesForTrainer(@PathVariable long id, Pageable pageable) {
