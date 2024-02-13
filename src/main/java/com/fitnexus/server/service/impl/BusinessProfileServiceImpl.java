@@ -669,6 +669,7 @@ public class BusinessProfileServiceImpl implements BusinessProfileService {
         String country = publicUser.getCountry();
         Page<BusinessProfile> businessProfiles;
 
+
         // type - GROUP, PERSONAL, PHYSICAL, INSTRUCTOR_PACKAGE ,GYM
         if (type == null || type.isEmpty()) {
             if (classTypeIds != null && classTypeIds.size() > 0) {
@@ -744,6 +745,7 @@ public class BusinessProfileServiceImpl implements BusinessProfileService {
         if (businessProfileByPublicBusinessName == null) {
             throw new CustomServiceException("Can't find this business profile");
         }
+
         return getBusinessProfile(businessProfileByPublicBusinessName.getId());
     }
 
