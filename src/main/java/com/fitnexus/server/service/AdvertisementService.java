@@ -20,6 +20,5 @@ public interface AdvertisementService {
     Page<AdvertisementDTO> getAllAdvertisements(Pageable pageable);
 
     AdvertisementDTO getAdvertisementById(long id);
-
     List<String> getAdvertisementImages();
 }
