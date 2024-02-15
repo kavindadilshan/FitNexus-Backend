@@ -33,6 +33,7 @@ public interface GymService {
 
     Page<GymDTO> getPopularGyms(Pageable pageable, String country, double longitude, double latitude);
 
+
     Page<GymDTO> getPopularGymsOpen(Pageable pageable);
 
     Page<GymDTO> searchActiveGyms(String name, double longitude, double latitude, Pageable pageable);
