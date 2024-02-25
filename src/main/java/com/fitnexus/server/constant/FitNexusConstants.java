@@ -75,5 +75,122 @@ public class FitNexusConstants {
         public static final String REGEX = "[^A-Za-z0-9]";
     }
 
+    public static final class DetailConstants {
+        public static final String CLASS_SESSION_BOOKED = "Class session booking is successful";
+        public static final String INSTRU_PACK_SUBSCRIBED = "Personal trainer subscription is successful";
+        public static final String MEMBERSHIP_PURCHASED = "Membership purchase is successful";
+        public static final String DAY_PASS_PURCHASED = "Single entry pass purchase is successful";
+        public static final String CLASS_SESSION_BOOKED_DESC_SMS = "Your reservation for the {class} on {dateTime} is confirmed. You may log in to the Fitzky App on your Mobile/Tab or log in to public.fitzky.com through your laptop/computer (Chrome Recommended)  to join the Online Class.";
+        public static final String CLASS_SESSION_BOOKED_DESC = "Your reservation for the Online Class {class} on {dateTime} is confirmed. Find your booking details in the Notifications section.";
+        public static final String PHYSICAL_SESSION_BOOKED_DESC = "Your reservation for the fitness class conducted on {dateTime} at {class} is confirmed.";
+        public static final String ONLINE_SESSION_BOOKED_DESC = "Your reservation for the Online class conducted on {dateTime} at {class} is confirmed.";
 
+        public static final String PHYSICAL_SESSION_CASH_BOOKED_DESC = "Your reservation for the fitness class {class} on {dateTime} is confirmed. Please do the payment to the coach on the class day to proceed.";
+
+        public static final String MEMBERSHIP_PURCHASED_DESC = "Hi {firstName}, Your purchase of '{the membership}' at {gym/Class} is confirmed.";
+        public static final String DAY_PASS_DESC = "Hi {firstName}, Your purchase of '{the dayPass}' at {gym/Class} is confirmed.";
+        public static final String INSTRU_PACK_SUBSCRIBED_DESC = "Hi {firstName}, You have successfully subscribed to {instructor}'s {day} day(s) personal training package. ";
+
+        public static final String CLASS_SESSION_BOOKED_FOR_COACH = "New Enrolment";
+        public static final String CLASS_SESSION_BOOKED_DESC_FOR_COACH = "Hi {firstName}, You have a new reservation for your {class}";
+
+        public static final String CLASS_SESSION_FAILED = "Failed Class session booking ";
+        public static final String PHYSICAL_SESSION_FAILED = "Failed Fitness session booking ";
+        public static final String INSTRU_PACK_FAILED = "Failed subscribing Instructor";
+        public static final String MEMBERSHIP_FAILED = "Failed purchasing membership";
+        public static final String CLASS_SESSION_FAIL_DESC = "Your purchase was unsuccessful due to an issue with your card. Please contact your bank. ";
+        public static final String PHYSICAL_SESSION_FAIL_DESC = "Your purchase was unsuccessful due to an issue with your card. Please contact your bank. ";
+        public static final String INSTRU_PACK_FAIL_DESC = "Your purchase was unsuccessful due to an issue with your card. Please contact your bank. ";
+        public static final String MEMBERSHIP_FAILED_DESC = "Your purchase was unsuccessful due to an issue with your card. Please contact your bank. ";
+        public static final int ENROLLED_CHECK_MINUTES = 5;
+        public static final int RATE_DECIMAL_PLACES = 1;
+
+        public static final String CLASS_SESSION_ASSIGNED = "Class session has been assigned";
+        public static final String CLASS_SESSION_ASSIGNED_DESC = "Hi {firstName}, The session of {className} scheduled on {dateTime} is assigned to you";
+        public static final String CLASS_SESSION_CANCELED = "Class session has been canceled";
+        public static final String CLASS_SESSION_CANCELED_DESC = "Hi {firstName}, The session of {class} scheduled on {dateTime}  has been cancelled.";
+        public static final String CLASS_SESSION_RESCHEDULED = "{className} has been rescheduled";
+        public static final String CLASS_SESSION_RESCHEDULED_DESC = "Hi {firstName}, The session of {className} that’s scheduled on {oldDateTime} has been rescheduled for {newDateTime}";
+
+        public static final String PHYSICAL_CLASS_SESSION_ASSIGNED = "Fitness class session has been assigned";
+        public static final String PHYSICAL_CLASS_SESSION_ASSIGNED_DESC = "Hi {firstName}, The session of {className} scheduled on {dateTime} is assigned to you";
+        public static final String PHYSICAL_CLASS_SESSION_LIST_ASSIGNED_DESC = "Hi {firstName}, You have been assigned to {session numbers} sessions of {class name} from {start date} to {end date}";
+        public static final String ONLINE_CLASS_SESSION_LIST_ASSIGNED_DESC = "Hi {firstName}, You have been assigned to {session numbers} sessions of {class name} from {start date} to {end date}";
+        public static final String PHYSICAL_CLASS_SESSION_CANCELED = "Fitness Class session has been canceled";
+        public static final String PHYSICAL_CLASS_SESSION_CANCELED_DESC = "Hi {firstName}, The {class} scheduled on {dateTime} has been cancelled";
+        public static final String PHYSICAL_CLASS_SESSION_RESCHEDULED = "Fitness class ({className}) has been rescheduled";
+        public static final String PHYSICAL_CLASS_SESSION_RESCHEDULED_DESC = "Hi {firstName}, The {className} which is scheduled on {oldDateTime} has been rescheduled to {newDateTime}";
+        public static final String TIME_ZONE_HEADER = "timeZone";
+
+        public static final String SESSION_START_BEFORE_TITLE = "Class reminder.";
+        public static final String ONLINE_SESSION_START_BEFORE_MESSAGE = "Hi {firstName}, Your assigned {className} is starting in {minutes} minutes. Please start the session for the enrolled participants to join video";
+        public static final String ONLINE_SESSION_START_BEFORE_MESSAGE_PUBLIC = "Get ready for your {className} in {minutes} minutes";
+        public static final String OFFLINE_SESSION_START_BEFORE_MESSAGE = "Hi {firstName}, Your {className} is starting in {minutes} minutes ";
+        public static final String OFFLINE_SESSION_START_BEFORE_MESSAGE_PUBLIC = "Your fitness class in {className} starts in {minutes} mins.";
+        public static final int SESSION_START_BEFORE_MINUTES = 5;
+
+        public static final String MEMBERSHIP_EXPIRE_TITLE = "Membership reminder.";
+        public static final String MEMBERSHIP_EXPIRE_MESSAGE = "'{the membership}' will expire from {time} from now'";
+        public static final String CASH_PURCHASE = "CASH";
+        public static final String AUTHORIZATION = "Authorization";
+        public static final String SUPPORT_MAIL_TITLE = "Fitzky support Q&A";
+        public static final String DAILY_PASS = "Single entry";
+        public static final String EMAIL_UPDATED_SUBJECT = "Your email address has been changed";
+        public static final String PASSWORD_RESET_SUBJECT = "Your password has been reset";
+
+        public static final String SUBSCRIPTION_PACKAGE_PURCHASED = "Subscription package purchase is successful";
+        public static final String SUBSCRIPTION_PACKAGE_PURCHASED_DESC = "Hi {firstName}, Your purchase of '{the package}' is confirmed.";
+
+        public static final int MAX_USER_LOGIN_ATTEMPTS = 20;
+        public static final int USER_LOCK_PERIOD = 10;
+    }
+
+    public static final class StripeConstants {
+        public static final String PAYMENT_SUCCESS = "succeeded";
+        public static final String PAYMENT_INTENT_SUCCESS = "payment_intent.succeeded";
+        public static final String PAYMENT_INTENT_FAIL = "payment_intent.payment_failed";
+        public static final String SETUP_SUCCESS = "succeeded";
+        public static final String SETUP_INTENT_SUCCESS = "setup_intent.succeeded";
+
+        //recurring
+        public static final String SUBSCRIPTION_CREATED = "customer.subscription.created";
+        public static final String INVOICE_CREATED = "invoice.created";
+        public static final String INVOICE_FINALIZED = "invoice.finalized";
+        public static final String INVOICE_PAYMENT_SUCCEEDED = "invoice.payment_succeeded";
+        public static final String INVOICE_PAYMENT_FAILED = "invoice.payment_failed";
+
+    }
+
+    public static final class ZoomConstants {
+        public final static int ROLE_JOINEE = 0;
+        public final static int ROLE_HOST = 1;
+    }
+
+    public static final class Avatar {
+        public final static String AVATAR = "https://d3iitm8eqnsqba.cloudfront.net/business/avatar.png";
+    }
+
+    public static final class AmountConstants {
+        public static final BigDecimal INVITE_A_FRIEND_DISCOUNT = new BigDecimal(300);
+        public static final BigDecimal STRIPE_TRANSACTION_COST_PERCENTAGE = new BigDecimal(2.9);
+        public static final BigDecimal PAYHERE_TRANSACTION_COST_PERCENTAGE = new BigDecimal(2.69);
+        public static final BigDecimal STRIPE_CURRENCY_COST_PERCENTAGE = new BigDecimal(1);
+        public static final BigDecimal STRIPE_TRANSACTION_COST_AMOUNT = new BigDecimal(0.30);
+        public static final BigDecimal FITZKY_STRIPE_CONTRIBUTION_PERCENTAGE = new BigDecimal(100);
+        public static final BigDecimal FITZKY_PAYHERE_CONTRIBUTION_PERCENTAGE = new BigDecimal(100);
+
+        public static final BigDecimal ONE_HUNDRED = BigDecimal.valueOf(100);
+
+        public static final Integer TRIAL_PERIOD = 7;
+    }
+
+    public static final class CorporateConstants {
+        public static final long AIA_CORPORATE_ID = 4;
+        public static long ACCA_CORPORATE_MEMBERSHIP_ID = 0;
+    }
+
+    public static final class ApplicationVersion {
+        public static final String VERSION = "1.8.81";
+        //Updated already consumed promocode checking part
+    }
 }
