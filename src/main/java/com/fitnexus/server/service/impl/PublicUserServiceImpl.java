@@ -1101,6 +1101,7 @@ public class PublicUserServiceImpl implements PublicUserService {
             UUID uuid = UUID.randomUUID();
             String orderId = uuid + "-" + userId + "-" + new Date().getTime();
             PreApproveResponseDTO preApproveResponseDTO = new PreApproveResponseDTO();
+
             TempPreApproveDetails tempPreApproveDetails = new TempPreApproveDetails();
 
             if (type.equals("web")) {

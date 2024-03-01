@@ -120,7 +120,13 @@ public class PublicUserClassController {
         return ResponseEntity.ok(new CommonResponse<>(true, classesByTrainer));
     }
 
-
+    @GetMapping(value = "/session/{id}/zoom")
+    public ResponseEntity getZoomSessionDetails(@PathVariable("id") long id, @RequestHeader("Authorization") String token) {
+        log.info("Get zoom details by session by public user: id - {}", id);
+        SessionZoomDetails sessionZoomInfo = classSessionService.getSessionZoomInfoForPublicUser(id, token);
+        log.info("Response : Session Zoom Info by public user");
+        return ResponseEntity.ok(new CommonResponse<>(true, sessionZoomInfo));
+    }
 
     @PostMapping(value = "/rate")
     public ResponseEntity rateClassByUser(@RequestBody ClassRateDTO rateDTO, @RequestHeader("Authorization") String token) {
@@ -184,7 +190,13 @@ public class PublicUserClassController {
         return ResponseEntity.ok(new CommonResponse<>(true, sessionsForHome));
     }
 
-
+    @GetMapping(value = "/online-classes/visibility")
+    public ResponseEntity isOnlineClassesVisible(@RequestHeader("Authorization") String token) {
+        log.info("\nCheck online classes's visibility");
+        boolean onlineClassesVisible = classService.isOnlineClassesVisible(token);
+        log.info("Response : Online classes visible-{}", onlineClassesVisible);
+        return ResponseEntity.ok(new CommonResponse<>(true, onlineClassesVisible));
+    }
 
     @GetMapping(value = "/sessions/weekly")
     public ResponseEntity<CommonResponse<Object>> getSessionsForWeek(
